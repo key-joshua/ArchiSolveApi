@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  archisolveapi-container:
+    image: archisolveapi-image
+    container_name: archisolveapi-container
+    build:
+      context: .
+      dockerfile: ArchiSolveApi/Dockerfile
+    networks:
+      - archisolveapi-container
+    ports:
+      - "3000:80"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    networks:
+      archisolveapi-container:
+        aliases:
+          - sqlserver
+    environment:
+      SA_PASSWORD: "cgMK8*l4dw9t!pMMtXcVtCvSL" 
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+      

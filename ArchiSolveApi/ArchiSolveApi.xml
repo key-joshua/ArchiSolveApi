@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ArchiSolveApi</name>
+    </assembly>
+    <members>
+        <member name="P:ArchiSolveApi.Controllers.v1.AddressDto.Country">
+            <summary>
+            3-letter ISO country code
+            </summary>
+            <example>Iran</example>
+        </member>
+        <member name="P:ArchiSolveApi.Controllers.v1.AddressDto.City">
+            <summary>
+            Name of city
+            </summary>
+            <example>Seattle</example>
+        </member>
+        <member name="M:ArchiSolveApi.Controllers.v1.UsersController.Login(MyApi.Models.TokenRequest,System.Threading.CancellationToken)">
+            <summary>
+            This method generate JWT Token
+            </summary>
+            <param name="tokenRequest">The information of token request</param>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ArchiSolveApi.Resources.LogsResource">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:ArchiSolveApi.Resources.LogsResource.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:ArchiSolveApi.Resources.LogsResource.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:ArchiSolveApi.Resources.LogsResource.ExceptionUsernameAndPasswordBadRequest">
+            <summary>
+              Looks up a localized string similar to Username or Password in not correct..
+            </summary>
+        </member>
+        <member name="P:ArchiSolveApi.Resources.LogsResource.MethodCall">
+            <summary>
+              Looks up a localized string similar to {0} method is called..
+            </summary>
+        </member>
+    </members>
+</doc>
