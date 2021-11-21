@@ -1,0 +1,1731 @@
+USEFULL AWS UBUNTU COMMAND
+----------------------------
+sudo -i : switch as root user
+Ctrl+D : remove from root user
+checkUser: whoami
+Login EC2 instance: ssh -i "HeritageBackend.pem" ubuntu@3.19.208.217
+Install required dependencies
+Next: follow this link (https://ourcodeworld.com/articles/read/977/how-to-deploy-a-node-js-application-on-aws-ec2-server)
+
+USEFULL GITHUT COMMAND
+------------------------------
+> git init
+> git add .
+> git commit -m 'Initial Deploy'
+> git remote add origin https://github.com/key-joshua/worldgift-giveaway-backend.git
+> git remote -v
+> git branch
+> git push origin branch-name
+
+Github Username: key-joshua
+Github Gen Token: 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
+
+PREVENT ACCESS INSIDE APP
+--------------------------------
+
+DEV_SECRET_MSG=Network error.
+DEV_SECRET_ADMIN_KEY=session
+DEV_SECRET_PLANT_KEY=session
+DEV_SECRET_DOCTOR_KEY=session
+DEV_SECRET_FARMER_KEY=sessions
+
+
+PREVENT LOGIN ACCESS FOR APP
+--------------------------------
+
+DEV_SECRET_LOGIN_STATE=false
+DEV_SECRET_LOGIN_STATUS=status
+HEROKU_POSTGRESQL_DEV_SECRET_LOGIN_MSG=FATAL:  database system identifier differs between the primary and standby [20595].
+
+
+For Next => /reset-otp
+For Resend => /verification-otp
+
+KUBERNETS STUFF
+----------------
+- aws --version
+- aws configure
+
+josue.byiringiro
+Thisisthelongestpasswordyouwilleverhaveandyouwillneedtochangeitwhenyoulogin#1
+
+Access: AKIA5PWDVYJXAPOVWKVO      
+Secret: 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
+
+To access the Kubernetes cluster you should be able to run:
+aws eks update-kubeconfig --name Struxe-Prod-Cluster
+
+then to get pods/container names:
+kubectl get pods
+
+then to check logs:
+kubectl logs <pod name>
+
+ASPNET DEPLOY HEROKU WITH DOCKER
+-------------------------------------
+
+Backup After ( worldgift-giveaway-backend ) Deployed From Github.
+
+Rferred From => https://medium.com/@oluwabukunmi.aluko/dockerize-asp-net-core-web-app-with-multiple-layers-projects-part1-2256aa1b0511
+
+Build App Inside Main Directory => docker build -f ArchiSolveApi/Dockerfile -t archisolveapi-image .
+
+Run Container => docker run --name archisolveapi-container -p 3000:80 -d archisolveapi-image
+
+
+Stop Docker Container => docker stop archisolveapi-container -t 0
+
+Remove Docker Container => docker rm archisolveapi-container
+
+Check App If Is Up Running => docker logs 3d57db9c9bbd
+
+Stop and Remove => docker stop 3d57db9c9bbd docker rm 3d57db9c9bbd
+
+
+Start SQL Server Container With Credentials =>  docker run --name=archisolveapi-server -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=1StrongPwd!!' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+Connect to SQL Server Management Studio =>
+
+       localhost,1433
+       SA
+       1StrongPwd!!
+
+Create Directory For Backup => Docker exec -it archisolveapi-server mkdir /var/opt/mssql/backups
+
+
+Copy And Paste Backup-File From Origin To Destination into container and Window => docker cp "C:\Users\this PC\Downloads\ArchiSolveDb.bak" archisolveapi-server:"/var/opt/mssql/backups" 
+
+Copy And Paste Backup-File From Origin To Destination into container (var/opt/mssql/backups -> mssql) => Docker cp ./mssql/ArchiSolveDb.bak archisolveapi-server:/var/opt/mssql/backups
+
+Copy And Paste Backup-File From Origin To Destination into container and Window => docker cp "C:\Users\this PC\Downloads\ArchiSolveDb.bak" archisolveapi_db_1:"/var/backups" 
+
+Download SQL Server Image => docker pull mcr.microsoft.com/mssql/server:2019-latest
+
+Check SQL Server Container Working IP=> docker inspect archisolveapi-server | findstr "IP"
+
+Restart Container/s Which only Hold Changes => docker-compose up --detach --build
+
+docker-compose up --detach --build worker
+
+docker-compose up --detach --build archisolveapi_db_1
+
+docker-compose stop -t 1 worker
+docker-compose build worker
+docker-compose up --no-start worker
+docker-compose start worker
+
+DEPLOY DOCKER COMPOSE TO HEROKU
+
+- Create heroku.yml file and Paste compose.yaml
+
+- docker tag 8246841c6324 registry.heroku.com/archisolveapi-backend/web
+- docker push registry.heroku.com/archisolveapi-backend/web
+- heroku container:release web --app archisolveapi-backend
+- heroku logs -t --app archisolveapi-backend
+- heroku open --app archisolveapi-backend
+
+
+DEPLOY DOCKER COMPOSE TO HEROKU DATABASE CMD
+
+Data Source=15.0.4178.1;Initial Catalog=ArchiSolveDb;Persist Security Info=False;  User Id=ArchisolveDBLogin; Password=z2AuxWs6ypxQMwqG;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+Data Source=host.docker.internal;Initial Catalog=ArchiSolveDb;Persist Security Info=False;  User Id=ArchisolveDBLogin; Password=z2AuxWs6ypxQMwqG;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+Data Source=tcp:host.docker.internal,1433;Initial Catalog=ArchiSolveDb;Persist Security Info=False;  User Id=ArchisolveDBLogin; Password=z2AuxWs6ypxQMwqG;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
+
+ 
+Data Source=host.docker.internal;Initial Catalog=ArchiSolveDb;Persist Security Info=False;  User Id=archisolvedblogin; Password=cgMK8*l4dw9t!pMMtXcVtCvSL;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+Data Source=tcp:eu-az-sql-serv1.database.windows.net,1433;Initial Catalog=ArchiSolveDb;Persist Security Info=False;User ID=archisolvedblogin;Password=cgMK8*l4dw9t!pMMtXcVtCvSL;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+ 
+- heroku addons:create mssql:test --app archisolveapi-backend
+- heroku addons:open mssql
+
+
+
+HEROKU DEPLOY WITH DOCKER
+------------------------------
+
+First add => Dockerfile with all required scripts
+
+Build App => docker build . --tag bandhan-backend-image
+
+
+Re-Build App => docker build --tag bandhan-backend-image .
+
+
+Check Running Image => docker images
+
+
+    REPOSITORY                   TAG          IMAGE ID          CREATED            SIZE
+    bandhan-backend-image        latest       437e181f1154      2 minutes ago      1.08GB
+
+
+Create and check Running Container Same Option as Local [Start App] not recommended => docker run -it -p 3000:3000 bandhan-backend-image
+
+
+Create and check Running Container [Start App] => docker run --name bandhan-backend-container -p 3000:3000 -d bandhan-backend-image
+
+
+   7cfcc7c1b1221f837b5e80c3be6dcfaf5a55a64a1c1becd37669672de4ebf18b
+
+
+Check Running Container => docker ps
+
+
+   CONTAINER ID   IMAGE                    COMMAND                  CREATED          STATUS         PORTS                                        NAMES
+   7cfcc7c1b122   bandhan-backend-image    "docker-entrypoint.s…"   2 minutes ago    Up 2 minutes   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp    bandhan-backend-container
+
+
+
+Check App If Is Up Running => docker logs 7cfcc7c1b122
+
+Check Heroku CLI if it is installed => heroku --version
+
+Login Into Heroku => heroku login
+
+Check Available Container => docker ps
+
+Login Into Container => heroku container:login
+
+Heroku Push Command => heroku container:push web --app backend-bandhan-docker
+
+Heroku Release Changes => heroku container:release web --app backend-bandhan-docker
+
+Heroku Open Command or Use Browser => heroku open --app backend-bandhan-docker
+
+
+Stop and Remove Docker Container => docker stop 7cfcc7c1b122 docker rm 7cfcc7c1b122
+
+Stop Docker Container => docker stop bandhan-backend-container -t 0
+
+Start Container With Logs => docker start -ai archisolveapi_db_1
+
+Remove Docker Container => docker rm bandhan-backend-container
+
+Remove Docker Container => docker rmi -f eeaceea81ce6 (imageID)
+
+Restart Docker Container => docker start container_name
+
+
+
+Docker Push Command [Useless at the moment] => docker push registry.heroku.com/backend-bandhan-docker/web
+
+
+Check Into Created Container
+-----------------------------
+
+Check Installed Packages => docker exec struxe-server-container npm list
+Enter Into Container => docker exec -it container name bash
+Out Into Container => exit
+
+
+NESTJS TAC TIC
+----------------
+
+- Error occured when a user did not included That class into .module.ts Nest can't resolve dependencies of the AuthService (UsersService, ?). Please make sure that the argument JwtService at index [1] is available in the AuthModule context.
+
+
+GIT TRICK
+---------------
+
+GO TO WINDOW BUTTON
+SEARCH KEYWORD "CREDENTIAL"
+GO WITH WINDOW 
+REMOVE ACCOUNT YOU WANT
+
+Heroku Additiona Configurations
+ - heroku create cititaksi
+- heroku git:remote -a cititaksi
+- heroku config:set NPM_CONFIG_PRODUCTION=false
+- git commit -am 'disable_node_modules_cache' --allow-empty
+- git push heroku master 
+
+Suggestion:
+
+- Adding the master who approved the service
+- Adding the master who rejected the service
+
+- validate booking appointment more than 5 times.
+- validate 00 minutes for booking appointment.
+
+HEROKU COMMAND
+______________________________________________
+
+step1. install heroku cli
+step2. heroku
+step3. heroku -v
+step4. heroku login
+step5. heroku pg:info --app your-highness-backend
+
+heroku pg:killall --app heritage-backend
+heroku restart --app heritage-backend
+heroku logs -t --app heritage-backend
+heroku run rails console --app helps-app
+heroku features:enable http-session-affinity -a helps-app [ For Socket.io]
+
+heroku logs -t --app designflyover-backend
+
+heroku login
+heroku run bash --app your-highness-backend
+
+
+
+UPGRADED DATABASE CREDENTIALS
+------------------------------
+
+BACKUP & RESTORE MONGO DB 
+--------------------------
+
+- cd C:\Users\this PC\Desktop\Virtual Experts\DBBackup> : Navigate the destination
+
+- mongodump mongodb+srv://virtualExpert:virtualExpert890@cluster0.er9rb.mongodb.net/virtualExpert?retryWrites=true&w=majority : create backup
+- mongorestore mongodb+srv://virtualExpert:virtualExpert890@cluster0.er9rb.mongodb.net/virtualExpert?retryWrites=true dump/virtualExpert : restore backuped database
+- mongorestore mongodb+srv://virtualExpert:virtualExpert890@cluster0.er9rb.mongodb.net/virtuaExpert?retryWrites=true dump/virtualExpert : restore renamed backuped database
+
+ACCESS REMOTE MONGO DB
+------------------------
+
+- mongo mongodb+srv://virtualExpert:virtualExpert890@cluster0.er9rb.mongodb.net/virtualExpert?retryWrites=true&w=majority
+- show dbs
+- use DBName : Choose database you want to delete
+- db.dropDatabase() : Delete database 
+
+HERITAGE PRODUCTION
+---------------------
+
+Host          ec2-35-174-35-242.compute-1.amazonaws.com
+Database      dfrbrtqqlfanr7
+Port          5432
+User          zarszfrkmkmaxe
+Password      7d82e6160da5feb329397a4e304125a56d6010fc34f27dd89a546b08202e1859
+URI           postgres://zarszfrkmkmaxe:7d82e6160da5feb329397a4e304125a56d6010fc34f27dd89a546b08202e1859@ec2-35-174-35-242.compute-1.amazonaws.com:5432/dfrbrtqqlfanr7
+
+
+HERITAGE STAGING
+-------------------
+
+Host          ec2-67-202-63-147.compute-1.amazonaws.com
+Database      deom1b7lpgn08h
+Port          5432
+User          danqmfftjncxpm
+Password      0b6f82936b2b893e96c5c2440d5836915c4bdcf83933e0e3e68147bef15f01c6
+URI           postgres://ubxzvpyzcnmatm:caac62ecc02f75f51d7729d6ff1b93d34f6cc97865d1db80fb9c5294719e4d25@ec2-67-202-63-147.compute-1.amazonaws.com:5432/d5v3aj9cvv2er8
+
+
+STRUXE STAGING
+----------------
+
+Endpoint/Host: struxe-prod-us-west-2.crwswz9hfdin.us-east-1.rds.amazonaws.com
+User: postgres
+Port: 5432
+Password: Thisisourproddbpasswordanditssuperhardtoguess1#
+
+
+UPDATE POSTGRES DATABASE RESOURCES
+___________________________________
+
+
+- https://dev.to/nedsoft/add-new-fields-to-existing-sequelize-migration-3527
+
+BACKUP COMMAND
+___________________
+
+set PGPASSWORD=key07202020
+pg_dump -h "localhost" -U "postgres" -f "C:\\Users\\this PC\\Desktop\\Heritage Backend\\database\\Back Before Upgrade" "heritage"
+
+
+set PGPASSWORD=caac62ecc02f75f51d7729d6ff1b93d34f6cc97865d1db80fb9c5294719e4d25
+pg_dump -h "ec2-67-202-63-147.compute-1.amazonaws.com" -U "danqmfftjncxpm" -f "C:\\Users\\this PC\\Desktop\\Heritage Backend\\database\\backup     %date:~0,2%-%date:~3,2%%date:~6,4%     %time:~0,2%-%time:~3,2%-%time:~6,2%" "d5v3aj9cvv2er8"
+
+set PGPASSWORD=7d82e6160da5feb329397a4e304125a56d6010fc34f27dd89a546b08202e1859
+pg_dump -h "ec2-67-202-63-147.compute-1.amazonaws.com" -U "ubxzvpyzcnmatm" -f "C:\\Users\\this PC\\Desktop\\Heritage Backend\\database\\Backup Before Upgrade Database "d5v3aj9cvv2er8"
+
+RESTORE COMMAND
+______________________
+set PGPASSWORD=0b6f82936b2b893e96c5c2440d5836915c4bdcf83933e0e3e68147bef15f01c6
+pg_dump -h "ec2-67-202-63-147.compute-1.amazonaws.com" -U "zarszfrkmkmaxe" -f "C:\\Users\\this PC\\Desktop\\deom1b7lpgn08h dfrbrtqqlfanr7"
+
+
+set PGPASSWORD=0b6f82936b2b893e96c5c2440d5836915c4bdcf83933e0e3e68147bef15f01c6
+pg_restore -h "ec2-67-202-63-147.compute-1.amazonaws.com" -U "danqmfftjncxpm" -f "C:\\Users\\this PC\\Desktop\\deom1b7lpgn08h "deom1b7lpgn08h"
+
+
+SWITCH DATABSE IN  SQL SHELL(psql)
+_____________________________________
+
+\c heritage
+
+IMPORT CSV FILE TO DATABASE SHELL(psql)
+----------------------------------------
+\copy PUBLIC."RegionUnitMccnames" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\regionUnitMccnamess.csv' with (format csv,header true, delimiter ',');
+\copy PUBLIC."RegionUnitMccnames" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\regionUnitMccnamesss2.csv' with (format csv,header true, delimiter ',');
+\copy PUBLIC."Plants" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\Plants.csv' with (format csv,header true, delimiter ',');
+
+\copy PUBLIC."Products" FROM 'C:\Users\this PC\Downloads\Products.csv' with (format csv,header true, delimiter ',');
+\copy PUBLIC."Products" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\Products\Tables\Updated Table\Products.csv' with (format csv,header true, delimiter ',');
+
+\copy PUBLIC."Quantities" FROM 'C:\Users\this PC\Downloads\Quantities.csv' with (format csv,header true, delimiter ',');
+\copy PUBLIC."Quantities" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\Products\Tables\Updated Table\Quantities.csv' with (format csv,header true, delimiter ',');
+
+\copy PUBLIC."Pallets" FROM 'C:\Users\this PC\Downloads\Pallets.csv' with (format csv,header true, delimiter ',');
+\copy PUBLIC."Pallets" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\Products\Tables\Updated Table\Pallets.csv' with (format csv,header true, delimiter ',');
+
+
+EXPORT CSV FILE FROM DATABASE
+------------------------------
+SET client_encoding TO 'UTF8';
+
+\COPY public."Plants" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\Plants.csv' with (format csv,header true, delimiter ',');
+\COPY public."Farmers" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\Farmers.csv' with (format csv,header true, delimiter ',');
+\COPY public."Cattles" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\Cattles.csv' with (format csv,header true, delimiter ',');
+\COPY public."Appointments" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\Appointments.csv' with (format csv,header true, delimiter ',');
+\COPY public."RegionUnitMccnames" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\RegionUnitMccnames.csv' with (format csv,header true, delimiter ',');
+\COPY public."Slips" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\Slips.csv' with (format csv,header true, delimiter ',');
+\COPY public."Milkings" TO 'C:\Users\this PC\Desktop\Heritage Backend\database\Milkings.csv' with (format csv,header true, delimiter ',');
+
+
+IMPORT CSV IN  PgAdmin
+_________________________________
+
+DROP TABLE public."Farmers";
+
+COPY public."SemiVerifiedFarmers" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\semiVerifiedUser.csv' WITH CSV HEADER;
+COPY public."RegionUnitMccnames" FROM 'C:\Users\this PC\Desktop\Heritage Backend\database\regionUnitMccname.csv' WITH CSV HEADER;
+
+ADD NEW COLUMN WITH DEFAULT VALUE PgAdmin
+___________________________________________
+
+
+UPDATE public."Plants" SET "profile"='https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.kindpng.com%2Ffree%2Favatar-icon%2F&psig=AOvVaw0NtNWMXd66iMeeJ5MI_eLj&ust=1628760990679000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNDq79TVqPICFQAAAAAdAAAAABAD';
+ALTER TABLE public."Farmers" ADD COLUMN role text NOT NULL DEFAULT 'waiting';
+UPDATE public."Farmers" SET "farmerName"=upper("farmerName");
+UPDATE public."Farmers" SET "appInstalled"=true;
+
+CHANGE DEFAULT VALUE OF EXIST COLUMN PgAdmin
+______________________________________________
+
+ALTER TABLE public."Farmers" ALTER COLUMN status SET DEFAULT 'waiting';
+
+
+UNDESCRIBED COMMAND
+______________________________________________
+
+psql
+mongod
+"proxy": "https://api-test.innoloft.com:3000",
+
+SSH COMMAND
+__________________
+
+- ssh-keygen
+- ssh git@gitlab.com
+- git config --global --list
+- git config --local --list
+- git config --local user.email "josue.b@koresoft.in"
+- git config --local user.name "Josh"
+- git commit --author="Josh <josue.b@koresoft.in>" -m"Completed 80% of Authentication Implementation"
+
+
+SQL COMMAND
+______________________________________________
+
+\dt : list all database table.
+\d "Farmers": list farmer table details.
+
+DROP TABLE public."Persons";
+CREATE TABLE public."Persons" ( PersonID int, PersonName varchar(255), Address varchar(255) );
+
+INSERT INTO public."Farmers" ("profilePicture", "role", "assigned", "status", "steps", "appVersion", "appLanguage", "farmerName", "gender", "age", "phone", "userCode", "pinCode", "unitCode", "mccCode", "mccMobile", "plateCode", "regionName", "unitName", "mccName", "plateName", "stateName", "districtName", "mendalName", "panchayatName", "villageName", "isVerified", "password", "firebaseToken", "createdAt", "updatedAt")
+VALUES ('https://media-exp1.licdn.com', 'employee', 'Arjun', 'finished', 'steps one', '2.0', 'english', 'Arjun', 'male', '1994-09-15 02:00:00+02', '+917021007499', '7500', '111111', '0120', '0040040668', '9849955829', '1503', 'HYDERABAD-1', 'CHEVELLA', 'M.KAMAL REDDY', 'Shankarpally', 'TELANGANA', 'RANGAREDDY', 'GANDEED', 'VENKATREDDY PALLY', 'VENKATREDDY PALLY', 't', '$2a$10$fW', 'dHI0fpnrQpyG79', '2021-08-25 23:23:53.056+02', '2021-08-25 23:23:53.056+02');
+
+SELECT COUNT(*) FROM public."Farmers";
+SELECT COUNT(*) FROM public."Farmers" WHERE "appVersion"= '2.0';
+
+SELECT * FROM public."Farmers";
+SELECT "farmerName" FROM public."Farmers";
+
+SELECT "farmerName", "firebaseToken" FROM public."Farmers";
+SELECT * FROM public."Farmers" WHERE "phone"= '+917021007499';
+
+SELECT "farmerName" FROM public."Farmers" ORDER BY "createdAt" ASC;
+SELECT "farmerName" FROM public."Farmers" ORDER BY "createdAt" DESC;
+
+SELECT "farmerName" FROM public."Farmers" ORDER BY "farmerName" ASC;
+SELECT "farmerName" FROM public."Farmers" ORDER BY "farmerName" DESC;
+
+SELECT "firebaseToken" FROM public."Farmers" WHERE "phone"= '+917021007499';
+SELECT * FROM public."Farmers" WHERE "phone"= '+917021007499' AND "farmerName"= 'Arjun';
+
+SELECT "farmerName" FROM public."Farmers" WHERE "phone"= '+917021007499' AND "farmerName"= 'Arjun';
+SELECT "farmerName" FROM public."Farmers" WHERE "phone"= '+917021007499' AND ("farmerName"= 'Arjun' OR "gender"= 'males');
+
+
+SELECT public."Farmers"."farmerName", public."Cattles"."cattleName", public."Milkings"."milkProduction" FROM public."Farmers" JOIN public."Cattles" ON public."Farmers"."id"=public."Cattles"."farmerId" JOIN public."Milkings" ON public."Cattles"."id"=public."Milkings"."cattleId";
+SELECT public."Farmers"."farmerName", public."Cattles"."cattleName", public."Milkings"."milkProduction" FROM public."Farmers" INNER JOIN public."Cattles" ON public."Farmers"."id"=public."Cattles"."farmerId" INNER JOIN public."Milkings" ON public."Cattles"."id"=public."Milkings"."cattleId";
+SELECT public."Farmers"."farmerName", public."Cattles"."cattleName", public."Milkings"."milkProduction" FROM public."Farmers" FULL OUTER JOIN public."Cattles" ON public."Farmers"."id"=public."Cattles"."farmerId" FULL OUTER JOIN public."Milkings" ON public."Cattles"."id"=public."Milkings"."cattleId";
+SELECT public."Farmers"."farmerName", public."Cattles"."cattleName", public."Milkings"."milkProduction" FROM public."Farmers" FULL OUTER JOIN public."Cattles" ON public."Farmers"."id"=public."Cattles"."farmerId" FULL OUTER JOIN public."Milkings" ON public."Cattles"."id"=public."Milkings"."cattleId" WHERE "phone"= '+917021007499';
+
+
+UPDATE public."Farmers" SET "farmerName"= 'Arjun Murali' WHERE "phone"= '+917021007499';
+UPDATE public."Farmers" SET "farmerName"= 'Arjun Murali', "gender"= 'males' WHERE "phone"= '+917021007499';
+
+
+
+
+
+
+DELETE FROM public."Farmers" WHERE "appLanguage"= 'english';
+SELECT public."Farmers"."farmerName", public."Cattles"."cattleName", public."Milkings"."milkProduction" FROM public."Farmers" FULL OUTER JOIN public."Cattles" ON public."Farmers"."id"=public."Cattles"."farmerId" FULL OUTER JOIN public."Milkings" ON public."Cattles"."id"=public."Milkings"."cattleId";
+
+Meeting Feed back 26-07-2020
+______________________________________________
+
+- Fix Search input. (Done)
+- Book form in mobile device. (Done)
+- validation of phonenumber and email api of book now. (50% Done)
+- Unlock button should go to the signup form. (Done)
+- Share Rohits codes. (Done)
+- Share Images diamesions. (Done)
+
+- REMOVE SOCIAL NETWORK LOGIN & REGISTER
+- ILLUSTRATION INTRODUCTION
+
+- change book successfully pop window color.
+- use R as small logo
+- change logo
+- shiftbutton
+
+02 August 2020
+
+- Check the Pickbazar codes.
+
+04 Aug 2020
+
+- Check Heroku storage for free Dynos
+- Check Hoby Dynos benefits
+
+
+09 Aug 2020
+
+- Check Heroku storage for free Dynos
+- will be able to upgrade Hoby Dynos to handle 50, 000 of users. 
+- Check Hoby Dynos benefits and how number of users can handle by it.
+
+
+
+Project Suggestions
+
+Display Doctor Available Time Before Book
+Click Enter Buttton For Action On Button
+Use RefereceId/Relations To Show Data And Keep Web App Updated [ Example: User created appointment. So, once doctor change his name the appointment details will not get update if you didn't use reference/relation]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pointing Configurations
+
+rivopets.com   your-highness-frontend.herokuapp.com.
+
+www your-highness-frontend.herokuapp.com.
+
+
+DNS ZONE rivopets.com
+
+autoconfig   autoconfig.hostinger.com
+
+cpanel       clcp.hostinger.com
+
+phpmyadmin    clcp.hostinger.com
+
+webmail     clcp.hostinger.com
+
+
+
+
+
+TASK COMPLETED
+---------------------
+FRONTEND :  https://saloneverywhere-frontend.herokuapp.com/
+BACKEND  :  https://saloneverywhere-backend.herokuapp.com/
+
+During the implementation of the task, I have created Frontend and Backend with 
+MongoDB/PostreSQL.
+
+BACKEND SIDE [Clear documentation can found on github repository]
+---------------------------------------------------------------------
+
+This is repository of the Backend https://github.com/key-joshua/SalonEverywhere-backend
+
+This is the Pull Request of completed feature https://github.com/key-joshua/SalonEverywhere-backend/pull/1
+
+This is the Backend hosted app URL https://saloneverywhere-backend.herokuapp.com/
+
+FRONTENDSIDE [Clear documentation can found on github repository]
+---------------------------------------------------------------------
+
+This is repository of the Frontend https://github.com/key-joshua/SalonEverywhere-frontend
+
+This is the Pull Request of completed feature https://github.com/key-joshua/SalonEverywhere-frontend/pull/1
+
+This is the Frontend hosted app URL https://saloneverywhere-frontend.herokuapp.com/
+
+
+ALL MY PUBLIC REPOSITORY :  https://github.com/key-joshua?tab=repositories
+
+
+
+
+Microsoft Windows [Version 10.0.18363.836]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32>heroku certs:auto:enable
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Error: Missing required flag:
+ »     -a, --app APP  app to run command against
+ »   See more help with --help
+
+C:\Windows\system32>heroku rivopets.com
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Warning: rivopets.com is not a heroku command.
+Did you mean ci:open? [y/n]:
+ »   Error: Run heroku help for a list of available commands.
+
+C:\Windows\system32>heroku https://your-highness-frontend.herokuapp.com
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Warning: https://your-highness-frontend.herokuapp.com is not a heroku command.
+Did you mean apps:favorites:remove? [y/n]:
+ »   Error: Run heroku help for a list of available commands.
+
+C:\Windows\system32>heroku certs:auto:enable
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Error: Missing required flag:
+ »     -a, --app APP  app to run command against
+ »   See more help with --help
+
+C:\Windows\system32>heroku certs:auto:enable --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+Enabling Automatic Certificate Management... !
+ !    You do not have access to the app your-highness-frontend.
+
+C:\Windows\system32>heroku login
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+heroku: Press any key to open up the browser to login or q to exit:
+Opening browser to https://cli-auth.heroku.com/auth/cli/browser/faa77fe5-12e7-447b-a765-852bcd47f741?requestor=SFMyNTY.g3QAAAACZAAEZGF0YW0AAAANNDEuMTg2LjgzLjEzOWQABnNpZ25lZG4GABgkaWZ0AQ.0hzAUDfWqrP1RBsDOf47YuJy8pqCCiy75jqjkF0Gv4A
+Logging in... done
+Logged in as yourfhighness@gmail.com
+
+C:\Windows\system32>heroku certs:auto:enable --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+Enabling Automatic Certificate Management... starting. See status with heroku certs:auto or wait until active with heroku certs:auto:wait
+=== Your certificate will now be managed by Heroku.  Check the status by running heroku certs:auto.
+
+C:\Windows\system32>heroku certs:auto
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Error: Missing required flag:
+ »     -a, --app APP  app to run command against
+ »   See more help with --help
+
+C:\Windows\system32>heroku certs:auto --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+=== Automatic Certificate Management is enabled on your-highness-frontend
+
+Certificate details:
+Common Name(s): www.rivopets.com
+Expires At:     2020-12-06 01:05 UTC
+Issuer:         /C=US/O=Let's Encrypt/CN=Let's Encrypt Authority X3
+Starts At:      2020-09-07 01:05 UTC
+Subject:        /CN=www.rivopets.com
+SSL certificate is verified by a root authority.
+
+Domain            Status       Reason                                  Last Updated
+────────────────  ───────────  ──────────────────────────────────────  ────────────
+www.rivopets.com  Cert issued                                          29 minutes
+rivopets.com      Failing      Unable to resolve DNS for rivopets.com  29 minutes
+
+=== Some domains are failing validation, please verify that your DNS matches: heroku domains
+    See our documentation at https://devcenter.heroku.com/articles/automated-certificate-management#failure-reasons
+
+C:\Windows\system32>heroku certs:auto:refresh
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Error: Missing required flag:
+ »     -a, --app APP  app to run command against
+ »   See more help with --help
+
+C:\Windows\system32>heroku certs:auto:refresh --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+Refreshing Automatic Certificate Management... done
+
+C:\Windows\system32>heroku certs:auto --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+=== Automatic Certificate Management is enabled on your-highness-frontend
+
+Certificate details:
+Common Name(s): www.rivopets.com
+Expires At:     2020-12-06 01:05 UTC
+Issuer:         /C=US/O=Let's Encrypt/CN=Let's Encrypt Authority X3
+Starts At:      2020-09-07 01:05 UTC
+Subject:        /CN=www.rivopets.com
+SSL certificate is verified by a root authority.
+
+Domain            Status       Reason                                  Last Updated
+────────────────  ───────────  ──────────────────────────────────────  ────────────
+www.rivopets.com  Cert issued                                          35 minutes
+rivopets.com      Failing      Unable to resolve DNS for rivopets.com  35 minutes
+
+=== Some domains are failing validation, please verify that your DNS matches: heroku domains
+    See our documentation at https://devcenter.heroku.com/articles/automated-certificate-management#failure-reasons
+
+C:\Windows\system32>heroku certs:auto --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ !    ENOTFOUND: getaddrinfo ENOTFOUND api.heroku.com
+
+C:\Windows\system32>heroku certs:auto --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+=== Automatic Certificate Management is enabled on your-highness-frontend
+
+Certificate details:
+Common Name(s): www.rivopets.com
+Expires At:     2020-12-06 01:05 UTC
+Issuer:         /C=US/O=Let's Encrypt/CN=Let's Encrypt Authority X3
+Starts At:      2020-09-07 01:05 UTC
+Subject:        /CN=www.rivopets.com
+SSL certificate is verified by a root authority.
+
+Domain            Status       Reason                                  Last Updated
+────────────────  ───────────  ──────────────────────────────────────  ────────────
+www.rivopets.com  Cert issued                                          about 1 hour
+rivopets.com      Failing      Unable to resolve DNS for rivopets.com  about 1 hour
+
+=== Some domains are failing validation, please verify that your DNS matches: heroku domains
+    See our documentation at https://devcenter.heroku.com/articles/automated-certificate-management#failure-reasons
+
+C:\Windows\system32>heroku domains
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Error: Missing required flag:
+ »     -a, --app APP  app to run command against
+ »   See more help with --help
+
+C:\Windows\system32>heroku domains
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+ »   Error: Missing required flag:
+ »     -a, --app APP  app to run command against
+ »   See more help with --help
+
+C:\Windows\system32>heroku domains --app your-highness-frontend
+ »   Warning: heroku update available from 7.42.1 to 7.42.8.
+=== your-highness-frontend Heroku Domain
+your-highness-frontend.herokuapp.com
+
+=== your-highness-frontend Custom Domains
+Domain Name      DNS Record Type DNS Target
+rivopets.com     ALIAS or ANAME  tapered-gazelle-6tv9imj00eay0zqo6wjgyzd3.herokudns.com
+www.rivopets.com CNAME           philosophical-grape-u04q7co8rrcotdqim6t7fp2c.herokudns.com
+
+postgres://adbegkbdqapfsn:020ac01121d2b58847ace098c2e56e56d2172002558d4548b7da489617f60f9c@ec2-3-95-87-221.compute-1.amazonaws.com:5432/d3djhajctghjal
+
+
+DATABASE_USERNAME => adbegkbdqapfsn  //adbegkbdqapfsn
+
+HOST => ec2-3-95-87-221.compute-1.amazonaws.com  @ec2-3-95-87-221.compute-1.amazonaws.com
+
+PRO_DATABASE => d3djhajctghjal    /d3djhajctghjal
+
+DATABASE_PASSWORD = > 020ac01121d2b58847ace098c2e56e56d2172002558d4548b7da489617f60f9c :020ac01121d2b58847ace098c2e56e56d2172002558d4548b7da489617f60f9c
+
+
+FOR RIVOPETS DATABASE
+
+postgres://qxywsxeafqmotp:6d0258e4378dc1211c1facb821f1bc942ea017f745a1f4eec6f5a7209dd9d43f@ec2-52-44-55-63.compute-1.amazonaws.com:5432/d6d7mdnvc6bj9d
+
+
+FOR HELP ME DATABASE
+
+postgres://zhbucnhdspqfpz:75d1543afc02427d352a0fdca29c57800e253ee09510abde2e5123071e6723b7@ec2-18-215-99-63.compute-1.amazonaws.com:5432/ddvkqi4us0ff5t
+
+
+DATABASE_USERNAME => //zhbucnhdspqfpz
+
+HOST => @ec2-18-215-99-63.compute-1.amazonaws.com
+
+PRO_DATABASE => /ddvkqi4us0ff5t
+
+DATABASE_PASSWORD = > :75d1543afc02427d352a0fdca29c57800e253ee09510abde2e5123071e6723b7
+
+
+
+
+
+
+
+
+Pavankv.work@gmail.com
+arjunm12@gmail.com (15 September [Birth Date])
+
+
+Camara Credit Card
+ 
+ Card number
+ Unkown
+
+ Expiration     CVV 
+   04/2024      668
+
+ First name     LastName
+  Mohamed        Camara
+ 
+ Email
+ onixmohamed@yahoo.fr
+
+  Country
+  Finland
+
+ Billing address line 1
+  Unknown
+
+ Billing address line 2
+  Espo
+ 
+ Others
+ Unkown
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Le 11/02/2020 For Homehub Project
+---------------------------------
+
+Feedback
+---------
+
+
+
+- Side Bar should push the contents
+- fix table batton width to be small
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Background Color should be little lighted
+Text Size into Navigation Bar should be increased
+Remove Dashboard Title from all the pages with borderBottom
+Choose Customer Name to open Details of customer with hover
+
+
+Re-correct User product page table on product name.
+make super admin tables responsive
+
+
+
+
+
+
+
+
+
+
+Hello Paypal, my name is Josue, and I hope you are doing great.
+Anyway, I have faced with the issue where I spent a couple of days 
+waiting for onfirmation code SMS, but still - I didn't get/receive 
+any Code yet into my SMS inbox and I want to verify my account by start 
+receiving the money from a friend who lives in India - Simply, he already 
+transferred some money for testing transfer but I am not able to receive it.
+
+
+
+
+
+
+I was been in this career for around three years and I have been working 
+in different markets place in all of those years - but after applying around 
+more than 68 times fails I have seen that it is difficult to get hired in Europe 
+as well as US markets. So, due to my research, I made I really hope that once I will
+get a chance to join this course provided by code fellows I will get the required skills
+to use as well as better connection.
+
+
+
+
+Definitely yes. I do have experience in coding. Some of the resources I used, was the lecture courses I unrolled when I was in college - where I was unrolling my courses in Information and Technology. I also passed in Andela Mark Zuckerberg Bootcamp. Some of the stacks I use are Adobe XD, Photoshop, BuilderX and APIs, Meteor.js, Node.js, Express, socket.io, React, Redux as well as HTML, SASS, and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB, and PostgreSQL DB together with AWS, Heroku, Netlify, I worked on Rivopets Web Application, Cititaksi Web Dashboard Application, Heritage Vet+ Apk backend
+, etc... My Github profile link is https://github.com/key-joshua, but some of the client's projects I worked
+on are private. Again  my LinkedIn profile link is https://www.linkedin.com/in/josue-byiringiro/
+
+
+
+The good thing which is surprisingly, I was responsive to my family and seven siblings around 2 years
+before my big brother got a job in Japan. And I did my best to cover all the required things that were
+needed at home.
+
+
+
+
+
+
+
+( Fulltime | Contract |Any Time Zone | Remote)
+________________________________________________
+
+Looking for a Full Stack Developer opportunity. 5+ years of experience with Adobe XD, Photoshop, BuilderX and APIs, Meteor.js, Node.js, Express, socket.io, React, Redux as well as HTML, SASS, and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB, and PostgreSQL DB together with AWS, Heroku, Netlify.
+I worked on Rivopets Web Application [rivopets.com], Cititaksi Web Dashboard Application [https://cititaksi.herokuapp.com], Heritage Vet+ Apk backend [https://www.heritagefoods.in/], etc...
+The previous company I worked on is [ andela.com, rivopets.com, and Heritage as Full Stack Developer ].
+
+- GitHub ( https://github.com/key-joshua?tab=repositories )
+- codepen ( https://codepen.io/key-joshua )
+
+Please If you are looking to hire, you can send a PM, WhatsApp me, or email me at my email address below so that we can connect very easily.
+
+Best Regards
+Josue BYIRINGIRO
+
+- WhatsApp: +250789619442
+- Email: k.joshua855@gmail.com
+- LinkedIn ( https://www.linkedin.com/in/josue-byiringiro )
+- Josue Resume [ CV ]: https://drive.google.com/file/d/16fYzS_eKvmwmf18FUdkJiMoiDba5CSV_/view?usp=sharing
+
+
+My name is Josue, I just want to let you know that I submitted my application document. And I just want to request an opportunity to let me prove my potential in this position.
+
+
+
+Asking for Scholarship
+____________________________
+
+Hello Maynooth University, 
+
+I am writing this email to request help with the scholarship for my further studies in Bachelor Degree in Information Technology/ Software Development. To be honest I come from a family who cannot afford to pay my college fees. Even my financial background has never taken me back but always motivated me to do better and better in my studies. I have been a deserving scholar all through my schools, always achieving distinction in my studies. I am aware of the fact that a Bachelor's Degree involves a lot of hard work and patience and I am all positive about it. As per the applicable terms and conditions, I have enclosed all the required certificates and mark sheets as well as the references. If you need anything else, I am really ready to respond -Thank you for your time, and hoping for a positive reply.
+
+Best Regards
+Josue BYIRINGIRO
+
+- WhatsApp: +250789619442
+- Email: k.joshua855@gmail.com
+- LinkedIn: https://www.linkedin.com/in/josue-byiringiro
+
+
+
+
+
+
+- LinkedIn: https://www.linkedin.com/in/josue-byiringiro
+- Codepen: https://codepen.io/key-joshua
+- Github: https://github.com/key-joshua
+
+
+1. I used to use PHP five years ago but after join Andela [andela.com] the company of Mark Zuckerberg I just switched to node.js as the best backend framework for now as well as react.js for the frontend side. So far, for now I just spent around three years in Node.js as the backend side part.
+
+2. If get an offer I am really ready to start working immediately as soon as possible as will schedule by the company – even if can be on Monday [22 March 2020], I am really ready to start.
+
+3. Yeah sure. I am just able to work both those time zone mentioned as well as the other time zones will be scheduled by the company.
+
+4. The expected salary I wish to start with is $1800 per month and after proving my potential to that position, the company may be will decide something else.
+
+Besides, I do have experience with Adobe XD, Photoshop, BuilderX and APIs, Meteor.js, Node.js, Express, socket.io, React, Redux as well as HTML, SASS, and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB, and PostgreSQL DB together with AWS, Heroku, Netlify.
+I worked on Rivopets Web Application [rivopets.com], Cititaksi Web Dashboard Application [https://cititaksi.herokuapp.com], Heritage Vet+ Apk backend [https://www.heritagefoods.in/], etc...
+The previous/recent company I worked on is [ andela.com, rivopets.com, and https://www.heritagefoods.in/ ].
+
+
+I'am free anytime [Manday to Sunday from 06:00 AM Central, IN, USA - 20:00 PM Central, IN, USA]
+
+
+Thank you very much Jacob for your time today to interview me for the position of Full Stack Developer. I am really looking forward to hearing from you.
+
+
+Best Regards
+Josue BYIRINGIRO
+
+- WhatsApp: +250789619442
+- Email: k.joshua855@gmail.com
+
+
+Why Do You Want to Work Here?
+______________________________________
+
+To be honest, I want to contribute to the development part in terms of software development because I am really interested in the service provided by the company through technology uses and I am really sure that I will be a good asset to your company once I will get a chance to join your company.
+
+
+
+
+
+What is your main programming language
+________________________________________
+
+I do have experience with Adobe XD, Photoshop, BuilderX and APIs, Meteor.js, Node.js, Express, socket.io, React, Redux as well as HTML, SASS, and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux with Mongo DB, MySQL DB, and PostgreSQL DB.
+
+
+Submit completed Task
+___________________________
+
+
+Hello Dear Sir/Madam !!
+
+My name is Josue BYIRINGIRO, I just want to let you know that I submitted my  completed work regards to the Test Task/Project for Web Developer position.
+
+description Link: https://docs.google.com/document/d/1mx_A_-ghld8V5WwUdJcH75Vf4fTR4QTd_AzVGijJCbs/edit?usp=sharing
+
+Thank you in advance, I really am looking forward to hearing from you.
+
+Best Regards
+Josue BYIRINGIRO [Full Stacker Developer]
+
+- WhatsApp: +250789619442
+- Email: k.joshua855@gmail.com
+- LinkedIn: https://www.linkedin.com/in/josue-byiringiro
+
+
+
+Startup Job Message
+__________________________
+
+
+Hello Dear Sir/Madam !!
+
+My name is Joshua, I am looking for a Full Stack Developer opportunity. I do have more than 3+ years of experience with Adobe XD, Photoshop, BuilderX and APIs, Meteor.js, Node.js Express, , Nest.js, socket.io, React, Redux as well as HTML, SASS, and CSS, Git [Github, Gilab] expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB, and PostgreSQL DB together with AWS, Heroku as well netlify.
+
+
+Follow-Up Email after Interview
+______________________________________
+
+
+Hi Akshat !!, 
+
+I hope all is well on your side. I’m following up to see if you have any status updates regarding the Developer position that I interviewed for on 16 Mar 2021. I’m excited to hear about the next steps, because it seems like am a great fit for that position due to my background based on what I learned and my experience !! Any updates you can share would be great. 
+Thanks so much, Josue BYIRINGIRO.
+
+
+
+
+Recent Project 
+______________________
+
+
+
+GLOBAL PROJECTS 
+_____________________________
+
+● RIVOPETS AT INDIA
+
+Full Stack Developer Built-in April 2020 - Current | India, Delhi. (1 developers)
+- https://www.rivopets.com
+
+● CITITAKSI AT FINLAND  
+
+Backend Developer Built-in Aug 2020 - Oct 2020 | Finland, Espoo. (3 developers)
+- https://www.cititaksi.herokuapp.com 
+
+LOCAL PROJECTS 
+_____________________________
+
+● ANDELA AT RWANDA 
+
+Junior Developer Built-in Feb 2019 – March 2020 | Rwanda, Kigali. (200 developers)
+- https://andela.com
+
+PERSONAL PROJECTS
+_____________________________
+
+● INNOLOFT CHALLENGE AT Built-in 1 Days | Aachen, Germany.  (1 developers) 
+- https://innoloft-dashboard-frontend-challenge.netlify.app 
+
+● SALON EVERYWHERE CHALLENGE AT Built-in 3 Days | Toronto, Ontario, Canada.  (1 developers) 
+- https://saloneverywhere-frontend.herokuapp.com 
+
+● ONE17TECHNOLOGY CHALLENGE AT Built-in 2 Days | Toronto, Ontario, Canada.  (1 developers) 
+- https://one17technologies-frontend.netlify.app 
+
+● PHONTOM-STACK CHALLENGE AT Built-in 1 Days | Toronto, Ontario, Canada.  (1 developers)
+- https://phantom-stack-technical-challenge.netlify.app 
+
+ETC ...........
+
+
+Education 
+_________________
+
+- ECOLE TECHNIQUE ST AUGUSTIN MIBILIZI 
+
+A2 Diploma in Electronics and Telecommunication from 2013 – 2014 | Rwanda, Western Province 
+
+- INTEGRATED POLYTECHNIC REGIONAL CENTER - IPRC EAST 
+
+A1 Advanced Diploma in Information and Technology from 2016 – 2019 | Rwanda, East Province 
+
+- Coursera
+
+Programming Short course
+
+Technical Skills
+_____________________
+
+- Programming Language: JavaScript.
+
+- Frameworks/Libraries: Node.js, Express, Socket.io, Sequelize, Mocha, and Chai.
+
+- Databases: Postgres, MongoDB, and MySQL.
+
+- AWS Services: S3, Elastic beanstalk, and EC2.
+
+- Other cloud hosting services: Heroku, Netlify, and AWS.
+
+
+
+ETC ...........
+
+
+Describe your recent experience with similar projects
+----------------------------------------------------------
+
+
+Here you can check everything.
+
+
+- GitHub (page https://github.com/key-joshua?tab=repositories)
+- LinkedIn (https://www.linkedin.com/in/josue-byiringiro/)
+- codepen (https://codepen.io/key-joshua)
+
+
+FRAMEWORKS
+---------------------------
+
+React.js/Redux,
+Node.js/Express,
+Non-SQL (MongoDB),
+SQL Database/Sequelize (PostgreSQL, MySQL),
+and AWS, Heroku, Netlify with advanced Git experience.
+
+
+Request Postpone Interview
+________________________________
+
+Hello Dear Sir/Madam !!
+thanks for your reach-out. 
+
+Hopefully, you are all doing great in Madras. Meanwhile, I just want to let you know that, currently I am not in Rwanda which means I am sadly to inform you that I will not be able to attend the interview tomorrow as you mentioned in the email but if it's possible I would like to request you for rescheduling the interview in this coming week from 1 April I will be there at Kigali, Rwanda.
+
+Thank you in advance, I really am looking forward to hearing from you. 
+
+Best Regards
+
+Josue BYIRINGIRO [Full Stacker Developer at http://heritagevetplus.com ]
+
+
+Submit Application Email
+________________________________
+
+Hello Dear Sir /Madam   
+
+My name is Josue BYIRINGIRO and I just want to let you know that I submitted my application documents.
+Thank you in advance, I really am looking forward to hearing from you.
+
+Best Regards
+Josue BYIRINGIRO [ Full Stacker Developer at https://www.heritagefoods.in ]
+
+- WhatsApp: +250789619442
+- Email: k.joshua855@gmail.com
+- LinkedIn: https://www.linkedin.com/in/josue-byiringiro
+
+BID
+---------
+
+Hello Dear Sir/Madam !!
+I have gone through into a short description of the work - and I would like to let you know that I am Full Stack Developer specialized in design with Adobe XD, Photoshop, BuilderX and APIs, Meteor.js, Node.js,  Express, socket.io, React, Redux as well as HTML, SASS and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB and PostgreSQL DB together with AWS, Heroku, Netlify,. And would like to create your responsive and user-friendly professional website as you need.
+
+I would like to tell the recruiter to give me the opportunity to let me prove my potential in this position.
+
+
+- GitHub (page https://github.com/key-joshua?tab=repositories)
+- LinkedIn (https://www.linkedin.com/in/josue-byiringiro/)
+- codepen (https://codepen.io/key-joshua)
+
+
+AXIS BANK MESSAGE
+------------------------
+
+Hello Dear Sir,
+
+My name is Josue BYIRINGIRO, my friend called Aditya has transferred the money to my bank account from India to Rwanda on 13 May 2021. But still now I did not receive that amount on my account, I have tried to reach to my bank office a couple of days but my bank responded to me, the money was not sent from Axis Bank.  Simply, I would like to request you to help me to check if the money that was sent maybe is on hold status. There below in the attachment section, I just shared with you a swift copy I got from Aditya. 
+
+Thank you in advance.
+
+
+
+REQUEST TO RESCHEDULE INTERVIEW
+-----------------------------------
+
+Hello Dear Sir/Madam !!
+thanks for your reach-out today. 
+
+Meanwhile, I was not aware that my interview will be hold tomorrow at office that why I want to let you know that currently I am not in Rwanda, which means I am sadly to inform you that I will not be able to attend that interview tomorrow as you mentioned in the first message you sent to me - but if it is possible I would like to request you put my interview online where we can use ( Google Meet / Zoom ) or to rescheduling my interview at 09 Jully 2021. Because I will be landing at Kigali at 05 Jully 2021 and I will be able to attend my interview.
+
+Thank you in advance, I am really looking forward to hearing from you. 
+
+Best Regards 
+Josue BYIRINGIRO
+
+[Full Stacker Developer at https://rivopets.com ]
+[Backend Developer at http://heritagevetplus.com ]
+
+
+
+- WhatsApp: +250789619442
+- Email: k.joshua855@gmail.com
+- LinkedIn: https://www.linkedin.com/in/josue-byiringiro
+
+
+
+
+Strength, Skills, Passion and Interest
+------------------------------------------
+
+By using my programming/coding skills with excellent communication skills and self-organized,
+I completed/built a lot of projects (Web Application Projects) from different clients almost from Rwanda,
+Finland, India, and Denmark, etc... Besides, because of my loving and my passion of programming,
+I have gained a chance to work on a global project, building a strong and good connection as well as working with teams 
+of people and developers from different cultures, different skills where everyone learns from each other.
+
+UP WORK
+----------
+
+FIRST PART
+------------------------
+
+I have gone through into the description of the work and I would like to let you know that I am Full Stack Developer of APIs, Node.js, Express, socket.io, React, Redux as well as HTML, SASS and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB and PostgreSQL DB together with Heroku.
+
+SECOND PART
+------------------------
+
+Hello Dear Sir !!
+
+I have gone through into the description of the work - and I would like to let you know that I am a Full Stack Developer of APIs, Node.js, Express, socket.io, React, Redux as well as HTML, SASS, and CSS expert having 5 years of experience creating modern websites with Nodejs as backend part and React, Redux as frontend part with Mongo DB, MySQL DB, and PostgreSQL DB together with AWS, Heroku and Netlify.
+
+
+Thank you in advance, I am really looking forward to hearing from you.
+
+Best Regards
+Josue BYIRINGIRO
+
+- WhatsApp: +250789619442
+- Email:  k.joshua855@gmail.com
+
+- GitHub (page https://github.com/key-joshua?tab=repositories)
+- LinkedIn (https://www.linkedin.com/in/josue-byiringiro/)
+- codepen (https://codepen.io/key-joshua)
+
+
+
+
+
+
+
+
+
+REDDIT MESSAGE
+------------------------
+
+Hello @JottyThePixelPusher
+
+Hopefully, you are doing great and safe. I have seen the position you posted of Sr. Full Stack Developer and I just want to let you know that I am really extremely fit for your position. Please include me in the recruitment process I will prove my potential.
+
+Thank you in advance, I am really looking forward to hearing from you.
+
+Best Regards
+Josue BYIRINGIRO
+
+- WhatsApp: +250789619442
+- Email:  k.joshua855@gmail.com
+- LinkedIn:  https://www.linkedin.com/in/josue-byiringiro
+
+
+
+LINKEDIN MESSAGE FOR RECRUTER
+---------------------------------------------
+
+Option One
+------------------------
+
+Hello @Cara,
+
+I have seen the position you posted of Senior Full Stack Developer and I just want to let you know that I am really extremely fit for your position. Please include me in the recruitment process I will prove my potential.
+
+Thank you in advance.
+-----------------------------------------
+Hello @Cara,
+
+I have seen the position you posted of Software Engineer and I just want to let you know that I am really extremely fit for your position. Please include me in the recruitment process I will prove my potential.
+
+Thank you in advance.
+
+
+
+Option Two
+------------------------
+
+
+Hello @Ashley Mosesso,
+
+Hopefully, my message finds you well. I have seen the job post of Full stack developer you posted and I come up in my mind the idea of pinging you for requesting you this opportunity because I am on the bench nowadays.
+
+
+
+
+PULL REQUEST
+----------------
+
+
+# WHAT DOES THIS PR DO?
+
+- Completed To Initialize Server.
+- Completed To Create Database.
+
+- Completed To Connect Database To Server.
+- Completed To Create Session Table With It's Seeders.
+
+## DESCRIPTION OF TASK TO BE COMPLETED ?
+
+- During the completion of this task I have managed to create server, create database, connect database to code base and again I have created a session table in our created Database. Last but not least I have created initial route of our server which will handle all wrong requests which is requested on GET Method.
+
+## HOW SHOULD THIS BE MANUALLY TESTED ?
+
+###  The way this will be tested:
+
+- should clone this repository with ```git clone https://gitlab.com/struxe/core-backend.git```
+- should switch into this branch with ```git checkout ch-initialize-server```
+
+- After diving into a branch, should run the ```npm cache clean --force``` &```npm install``` by installing required libraries.
+- After installing the required libraries - should also set up a .env file by referring to the .env.example as required.
+
+- After installation successfully, you have to connect your laptop or computer to the internet.
+- After connecting, you should run ```npm start``` by running the core-backend server locally.
+- At the end open your postman with GET or your browser and visit ```http://localhost:6000```
+
+## HOW SHOULD THIS BE AUTOMATICALLY TESTED ?
+
+- Click here => [Deployed Backend](https://backend-core.struxe.com)
+
+## ANY BACKGROUND CONTEXT YOU  WANT TO PROVIDE ?
+
+  - The context is all about pure Node.js, Express with PostgreSQL Database with other required libraries.
+
+## WHAT ARE THE RELEVANT TRACKER STORIES ?
+
+- Click here =>  [None]()
+
+### SCREENSHOTS (IF APPROPRIATE)
+
+#### Captured From PgAdmin
+
+![Tweak Challenge Tests](https://user-images.githubusercontent.com/38179232/120941299-20eab400-c722-11eb-98c0-554f26935afd.PNG)
+
+### Any Blocker/Issue
+
+- N/A
+
+
+
+
+
+#########################################################################################################################################################################
+
+
+
+Where did you find inspiration for your social enterprise?
+- I Just got inspired by the one company I worked on, in India which provides online service such as medical treatment services and pets’ products services.
+
+
+
+What do you consider to be your “starting point” for your social enterprise? What were the first steps you took to “get started”?
+
+- I just started with all required technologies which can help me to create my online platform which can start offering online pets services.
+
+
+
+#########################################################################################################################################################################
+
+DATING GIRL
+-------------------
+
+I am Joshua
+ranapatient's profile picture
+I'm Rana
+Nice to meet you.
+I was just passing through your profile and I feel like interested in you.
+Thank you
+ranapatient's profile picture
+So u don't speak kinyarwanda?
+Welcome, it's our pleasure.
+No I do speak and I am pure Rwandan
+Why do you ask me that ?
+ranapatient's profile picture
+Replied to you
+Why do you ask me that ?
+Hhhhhh my English is so poor
+No way, shaka ikindi ubwira kuko ahoho waba umbeshye cevre.
+Replied to you
+No way, shaka ikindi ubwira kuko ahoho waba umbeshye cevre.
+How are u so sure ko naba nkubeshye
+ranapatient's profile picture
+Are u married?
+Probably I am not sure, if I am correct or wrong but according to my thinking I guess your English can not be poor.
+No I am not married but I will married because I do not have those understanding of some people who used to say " Ntagikwe "
+What about you, are you married because even if I am not sure I can guess no. Lol
+Replied to you
+Probably I am not sure, if I am correct or wrong but according to my thinking I guess your English can not be poor.
+Why do u feel so🙄
+ranapatient's profile picture
+Replied to you
+What about you, are you married because even if I am not sure I can guess no. Lol
+I'm not married
+Am just waiting for the right person
+You replied
+Why do u feel so🙄
+The way you replying shows me that you know English
+ranapatient's profile picture
+Replied to you
+The way you replying shows me that you know English
+Cyakoze ndagerageza
+Okay, maybe you have a reason. I can not judge you on this.
+You replied
+I'm not married
+Am just waiting for the right person
+Like me. Right ?
+Replied to you
+Like me. Right ?
+😂😂😂😂 ooh really
+But we never know
+ranapatient's profile picture
+Replied to you
+Okay, maybe you have a reason. I can not judge you on this.
+Yes of course....
+Meantime, it means you have men but who are not the right men
+Right ?
+ranapatient's profile picture
+Replied to you
+Meantime, it means you have men but who are not the right men
+They're such a wasting of time 😓
+You replied
+😂😂😂😂 ooh really
+But we never know
+You are kind of guessing. Right ? Anyway, kuberiki se wari ubanje guseka Rana ?
+Hahahahhh. Two questions in one sentence. Sorry for that.
+Replied to you
+You are kind of guessing. Right ? Anyway, kuberiki se wari ubanje guseka Rana ?
+Confidence Uba uhagaze😂
+ranapatient's profile picture
+Replied to you
+Hahahahhh. Two questions in one sentence. Sorry for that.
+That's ok
+It's still new
+You replied
+They're such a wasting of time 😓
+Yeah I can see. Like start falling in love and trust then ugasanga bigenze uko utabitekerezaga sibyo
+You replied
+Confidence Uba uhagaze😂
+Shan se Rana wajye koko ubona muri iki gihe umuntu atagize confidence bitaba bigoye weee
+Replied to you
+Yeah I can see. Like start falling in love and trust then ugasanga bigenze uko utabitekerezaga sibyo
+That's always fucking happening
+ranapatient's profile picture
+Replied to you
+Shan se Rana wajye koko ubona muri iki gihe umuntu atagize confidence bitaba bigoye weee
+Nihatari
+You replied
+That's always fucking happening
+Let us hope yuko aba ari igihe kitaragera. Right ?
+You replied
+Nihatari
+Nonese Rana urumva mbeshye weee
+Anyway, nonese Rana are you interested in Hooking up or Hanging out or none of them.
+ranapatient's profile picture
+Replied to you
+Let us hope yuko aba ari igihe kitaragera. Right ?
+Yes
+Okay. It means you can not get hooking up with me because you liked maybe.
+ranapatient's profile picture
+Still typing 🙄
+What about 20, 000 Frw once I will want to see you squirting on my dick.
+ranapatient's profile picture
+Replied to you
+What about 20, 000 Frw once I will want to see you squirting on my dick.
+Never
+You replied
+Still typing 🙄
+Does it took a long time ?
+Replied to you
+Does it took a long time ?
+Yh
+ranapatient's profile picture
+Good night Josh
+Liked the way you are straight tho !!
+You replied
+Never
+What can be your last wish
+ranapatient's profile picture
+Replied to you
+Liked the way you are straight tho !!
+Thank you
+You replied
+Good night Josh
+Oohh the same to you, have a good night and nice dream.
+Yeah I think so. Don't you want to feel it ?
+The way i can sack your pussy, licking your neck and breast, ...
+Shan I can lying to but at least ntacyo turamenyanye mamaaa. Anyway, ahubwo wampaye contact yawe ?
+ranapatient's profile picture
+Replied to you
+Shan I can lying to but at least ntacyo turamenyanye mamaaa. Anyway, ahubwo wampaye contact yawe ?
+U mean u can't lie
+Let us hope but i can not lying to afford you 50k for now
+ranapatient's profile picture
+Anyhow u can't be my Mr right
+You replied
+U mean u can't lie
+I replied you already.
+ranapatient's profile picture
+So I can't give you my contact
+You replied
+Anyhow u can't be my Mr right
+Okay, why you that ?
+You replied
+So I can't give you my contact
+So, how will I get you once we will have to do a deal ?
+U'll text me here
+If we have deal then we'll go beyond
+ranapatient's profile picture
+Replied to you
+Okay, why you that ?
+U're not different
+Ok. Jyewe numvaga byaba byiza umpaye contact but if you don't want 🤷‍♂️
+ranapatient's profile picture
+Replied to you
+Ok. Jyewe numvaga byaba byiza umpaye contact but if you don't want 🤷‍♂️
+Here's the real thing I feel like I'm interested so ntabwo nshaka ko bijyera kure
+You replied
+U're not different
+Okay. To be specific why you said there is no difference
+Replied to you
+Okay. To be specific why you said there is no difference
+I didn't find any different
+So we should stop talking here too until u get money then tukimanukira
+ranapatient's profile picture
+Hhhhhh
+You replied
+Here's the real thing I feel like I'm interested so ntabwo nshaka ko bijyera kure
+Ese ubundi Rana bitwaye iki bigeze kure weee. Ikigaragara ahubwo nawe usigaye ufite ubwoba bwo gukundana, uba wumva wabonana numuntu bigahita birangira bidakomeje.
+Simply, bishoboka yuko wigeze kubabarira murukundo. Right ?
+Replied to you
+Simply, bishoboka yuko wigeze kubabarira murukundo. Right ?
+Definitely
+I don't want to love ever again
+ranapatient's profile picture
+So bye bye now
+Being honest ndumva unteye amatsiko cevre. Kubwiyo mpamvu I will meet you on Friday mvuye mukazi and then spending whole night with you.
+Besides, i would like to know your professional tho !!
+ranapatient's profile picture
+Good night
+6:03 AM
+ranapatient's profile picture
+Morning
+8:05 AM
+Bonjour beauté
+on dirait que tu te lèves tôt
+Replied to you
+on dirait que tu te lèves tôt
+I don't do français plz😂
+ranapatient's profile picture
+I really woke up early
+Shan ahaho ndumva u-confusin-ze cevre sinkubeshye.
+ranapatient's profile picture
+I meant u won't pay me
+You replied
+I don't do français plz😂
+Yeah nashakaga kukubwira bisanaho ubyuka kare
+You replied
+I meant u won't pay me
+Yeah that why you confused me. Last night you told me let everything stop until i will have the money to pay, then in this morning you come back with different mind 🤔
+ranapatient's profile picture
+Replied to you
+Yeah that why you confused me. Last night you told me let everything stop until i will have the money to pay, then in this morning you come back with different mind 🤔
+So u don't like the idea
+
+There you can see the last night chats.
+Replied to you
+There you can see the last night chats.
+ASE vip
+ranapatient's profile picture
+Nevermind tgen
+You replied
+So u don't like the idea
+Ariko Rana let me ask you interesting thing. Right ?
+Then
+ranapatient's profile picture
+Replied to you
+Ariko Rana let me ask you interesting thing. Right ?
+Sure
+Like nkuku aba tipe/jeune bashobora kubona umukobwa bakumva babaye interested kuriwe, nabakobwa birashoboka yuko byababaho ntayindi profit batekereje kuruhande.
+You replied
+ASE vip
+Rana I can guess yuko unkwa kuka beer 🙈
+Replied to you
+Like nkuku aba tipe/jeune bashobora kubona umukobwa bakumva babaye interested kuriwe, nabakobwa birashoboka yuko byababaho ntayindi profit batekereje kuruhande.
+Ubu biragoye twese tuba dushaka profit rukana kd buri wese aba akurura yishyira
+Replied to you
+Rana I can guess yuko unkwa kuka beer 🙈
+😂😂😂😂😂 ngahoooo kuber ik
+ranapatient's profile picture
+Replied to you
+Like nkuku aba tipe/jeune bashobora kubona umukobwa bakumva babaye interested kuriwe, nabakobwa birashoboka yuko byababaho ntayindi profit batekereje kuruhande.
+Kuber ik umbajij ibi
+You replied
+😂😂😂😂😂 ngahoooo kuber ik
+I am not sure a 100%. But probably nanijoro birashoboka yuko wari wa..... sibyo se 😏
+Okay
+I don't drink
+I was offering a good opportunity to fuck me
+ranapatient's profile picture
+U don't want it let's skip it
+You replied
+Kuber ik umbajij ibi
+Shan nyine jyewe nsigaye mbibona somehow, like kwakundi ubwira nkumu besto wawe uba wisanzuyeho ngo ndi alone shakira umwana twaba twisangirira akabyeri ahantu. Hanyuma aka kubwira reka nkurebere ndaje nkubwire and then akagaruka akubwira ngo arambwiye uruzakumuha ayo kujya muri saloon gukoresha imisatsi kuko yara hambuye and then yahagera ukabona arasutse deja nibintu byiza ahubwo ukabona asa nuri ashame ukuntu.
+You replied
+I don't drink
+Ra you can try it but not much. At least kugira uze nokwirekura bibaye ngombwa yuko ujya deep numuntu. Right ?
+Don't play naive kuk muba mushaka pussy zacu kubuntu?
+
+Those girls they're stupid ubundi uvugisha ukuri
+Replied to you
+Ra you can try it but not much. At least kugira uze nokwirekura bibaye ngombwa yuko ujya deep numuntu. Right ?
+Noo I don't need beer to deep
+To go deep*
+ranapatient's profile picture
+Anyway have a nice day
+You replied
+I was offering a good opportunity to fuck me
+I can not wait to lick your neck, sexy body and sacking your pussy. 🙈
+You replied
+Don't play naive kuk muba mushaka pussy zacu kubuntu?
+
+Those girls they're stupid ubundi uvugisha ukuri
+Yeah for sure. Biraruta ukaba straight like nabikubwiye nijoro I liked the way wahise uba straight cevre.
+ranapatient's profile picture
+Kuk gutyinga bikugora
+You replied
+Noo I don't need beer to deep
+Okay as you wish
+You replied
+Anyway have a nice day
+Thank you and the same to you. But what your professional ?
+You replied
+Kuk gutyinga bikugora
+Ubwiye ?
+Replied to you
+Thank you and the same to you. But what your professional ?
+U don't need to know
+ranapatient's profile picture
+Replied to you
+Ubwiye ?
+Nevermind
+Ese ubwo wanyibwiriye Ra
+Ariko Ra bisanaho udakunda challenges. sibyo ?
+Replied to you
+Ariko Ra bisanaho udakunda challenges. sibyo ?
+It depends
+Video Chat
+Use the Instagram app to see this type of message.
+Video Chat
+Use the Instagram app to see this type of message.
+It was mistake
+ranapatient's profile picture
+
+
+
+You replied
+It depends
+Uuuhhm. It's okay
+You replied
+It was mistake
+Why not se ubyita mistake ubundi tubishatse sitwa having Video Call 🤗
+
+https://tmpfiles.org/dl/89966/rana.m4a
+Use this link i shared with you by listing whole my idea.
+Video Chat
+Use the Instagram app to see this type of message.
+Video Chat
+Use the Instagram app to see this type of message.
+Nabiretse kuber nabonaga utabishaka Hama ndabireka
+No I'm not confusing u
+I tried to make things clear
+I don't need anything from expect having sex with you
+ranapatient's profile picture
+From u*
+Video Chat
+Use the Instagram app to see this type of message.
+Video Chat
+Use the Instagram app to see this type of message.
+ranapatient's profile picture
+Nooo I don't want video call
+Video Chat
+Use the Instagram app to see this type of message.
+Okay. This is audio the
+Video Chat
+Use the Instagram app to see this type of message.
+You replied
+Nooo I don't want video call
+But for now I am using only audio call
+0787031003
+ranapatient's profile picture
+Call me
+Rana the phone number you shared with me is not connected
+check it well maybe you made mistake when you were typing your phone number.
+ranapatient's profile picture
+Nooo onger
+Umbwiye ?
+ranapatient's profile picture
+Try again
+
+
+
+
